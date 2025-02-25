@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./dochadzka_frontend  # Cesta k frontend adresáru
+    ports:
+      - "80:80"  # Exponovanie portu na 80
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./dochadzka_backend  # Cesta k backend adresáru
+    environment:
+      - DATABASE_URL=postgresql://postgres:iEgPUoyXySRLLZbMbwLZOXgxGHitHQLA@yamabiko.proxy.rlwy.net:36830/railway
+    ports:
+      - "8000:8000"  # Exponovanie portu na 8000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13  # Používame oficiálny postgres obraz
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: iEgPUoyXySRLLZbMbwLZOXgxGHitHQLA
+      POSTGRES_DB: railway
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data

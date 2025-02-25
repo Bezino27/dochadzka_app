@@ -1,0 +1,33 @@
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environment
+venv/
+.env
+
+# Database
+*.sqlite3
+
+# Static and media files
+staticfiles/
+media/
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Bytecode files
+*.pyc
+*.pyo
+*.pyd
+
+# Migrations (optional, ak nechceš verzovať automaticky generované migrácie)
+*/migrations/*.py
+*/migrations/*.pyc

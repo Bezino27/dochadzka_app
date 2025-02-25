@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %} Detail tréningu {% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-center">Detail tréningu</h2>
+    <hr>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title text-center"><strong>{{ selected_training.day }} --> {{ selected_training.time }}</strong></h4>
+            <p class="text-center text-muted">
+                <strong>{{ selected_training.date }}</strong> 
+            </p>
+        </div>
+    </div>
+
+    <h3 class="text-center mt-4">Zúčastnení hráči</h3>
+
+    {% if players %}
+        <ul class="list-group">
+            {% for player in players %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong>{{ player.jersey_number }}</strong> - {{ player.first_name }} {{ player.last_name }}
+                    </span>
+                    <span class="badge bg-primary">Hráč</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="alert alert-warning text-center">Žiadni hráči sa nezúčastnili tohto tréningu.</p>
+    {% endif %}
+
+
+    <h3 class="text-center mt-4">Nezúčastnení hráči</h3>
+    {% if players_in_category %}
+        <ul class="list-group">
+        {% for player in players_in_category %}
+            {% if player not in players %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                <strong>{{ player.jersey_number }}</strong> - {{ player.first_name }} {{ player.last_name }}
+                {% for absence in all_absence %}
+                    {% if absence.player == player and absence.training == selected_training %}
+                        <span class="badge bg-warning text-dark px-3 py-2 ms-2">
+                            📌 Dôvod: {{ absence.reason }}
+                        </span>
+                        
+                    {% endif %}
+                {% endfor %}
+                </span>
+                <span class="badge bg-primary">Hráč</span>
+                </li>
+            {% else %}
+                
+            {% endif %}
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="alert alert-warning text-center">Všetci hráči sa zúčastnili tréningu.</p>
+    {% endif %}
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'dochadzka_app:category' category_name=category_name %}" class="btn btn-secondary">
+            ⬅️ Späť do kategórie {{ category_name }}
+        </a>
+    </div>
+    <a href="{% url 'dochadzka_app:training_edit' training_id=selected_training.id category_name=category_name %}"> Edit </a>
+</div>
+{% endblock %}

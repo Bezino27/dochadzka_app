@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %} My Super Page {% endblock %}
+
+{% block body %}
+        <style>
+        .no-underline {
+            text-decoration: none;
+            color: black;
+        }
+
+        .no-underline:hover {
+            color: black;
+        }
+        .attendance{
+            width: 45px;
+            height: 27px;
+            line-height: 27px;
+            border-radius: 10px;
+        }
+        @media (max-width: 800px) {
+            .detail {
+                display: none;
+            }
+        }
+    </style>
+<div class="container mt-4">
+    <a href="{% url 'dochadzka_app:post' %}" class="btn btn-primary mb-3">Pridať nového hráča</a>
+
+    <hr>
+
+    <h2 class="text-center">Hráči v kategórii {{ category_name }}</h2>
+    {% if players_in_category %}
+        <ul class="list-group">
+            {% for player in players_in_category %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <!-- Kliknutím na meno sa zobrazia tréningy hráča -->
+                    <strong class="player-toggle" data-player-id="player_{{ player.id }}" style="cursor: pointer;">
+                        {{ player.jersey_number }} - {{ player.first_name }} {{ player.last_name }}
+                    </strong>
+                
+                    <span class="badge"
+                        style="background-color: {% if player.attendance_percentage >= 90 %}green{% elif player.attendance_percentage >= 80 %}greenyellow{% elif player.attendance_percentage >= 70 %}orange {% else %} red {% endif %}; color: black">
+                        <div class="attendance"> 
+                           {{ player.attendance_percentage|floatformat:0  }}%
+                        </div>
+                    </span>
+                
+                </li>
+                    <!-- Skrytá sekcia s tréningami pre tohto hráča -->
+                    <ul class="list-group mt-2 d-none" id="player_{{ player.id }}">
+                        {% for training in all_trainings%}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="text-primary">{{ training.date|date:"d - F" }}</strong>
+                                <span class="text-muted">→ {{ training.day }} {{ training.time }}</span>
+
+                                {% if player in training.players.all %}
+                                    <span class="badge bg-success me-2 px-3 py-2">
+                                        ✔️
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger me-2 px-3 py-2">
+                                        X
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="d-flex align-items-center">
+
+
+                                {% for absence in all_absence %}
+                                    {% if absence.training == training and absence.player == player%}
+                                        <span class="badge bg-warning text-dark px-3 py-2 ms-2">
+                                            📌 Dôvod: {{ absence.reason }}
+                                        </span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="detail">
+                                <a href="{% url 'dochadzka_app:training_view' training_target=training.id category_name=category_name %}"
+                                   class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye"></i> Detail
+                                </a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="alert alert-warning text-center">Žiadni hráči v tejto kategórii.</p>
+    {% endif %}
+
+    <h2 class="text-center mt-4">Všetky Tréningy</h2>
+
+    <!-- Tlačidlo na zobrazenie všetkých tréningov -->
+    <button id="toggleTrainings" class="btn btn-info mb-3">Zobraziť tréningy</button>
+
+    <!-- Skrytá sekcia s tréningami -->
+    <ul class="list-group d-none" id="trainingsList">
+        {% for training in all_trainings %}
+            <li class="list-group-item">
+                <strong>{{ training.date|date:"d - F" }}</strong> → {{ training.day }} {{ training.time }}
+                <span class="badge bg-success">Počet hráčov: {{ training.players.count }}</span>
+                <a href="{% url 'dochadzka_app:training_view' training_target=training.id category_name=category_name %}"
+                   class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-eye"></i> Detail
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'dochadzka_app:training' category_name=category_name %}" class="btn btn-success">Pridať nový tréning</a>
+    {% endif %}
+    <hr>
+    <a href="{% url 'dochadzka_app:index' %}" class="btn btn-secondary">Domov</a>
+</div>
+
+<!-- JavaScript na prepínanie tréningov -->
+<script>
+    document.querySelectorAll(".player-toggle").forEach(player => {
+        player.addEventListener("click", function() {
+            let playerTrainings = document.getElementById(this.getAttribute("data-player-id"));
+            playerTrainings.classList.toggle("d-none");
+        });
+    });
+
+    document.getElementById("toggleTrainings").addEventListener("click", function() {
+        let trainingsList = document.getElementById("trainingsList");
+        if (trainingsList.classList.contains("d-none")) {
+            trainingsList.classList.remove("d-none");
+            this.textContent = "Skryť tréningy";
+        } else {
+            trainingsList.classList.add("d-none");
+            this.textContent = "Zobraziť tréningy";
+        }
+    });
+</script>
+{% endblock %}
+
