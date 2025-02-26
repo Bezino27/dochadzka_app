@@ -1,9 +1,9 @@
 services:
   frontend:
     build:
-      context: ./dochadzka_frontend  # Cesta k frontend adresáru
+      context: ./dochadzka_frontend
     ports:
-      - "80:80"  # Frontend beží na porte 80
+      - "80:80"
     depends_on:
       - backend
     restart: always
@@ -12,27 +12,13 @@ services:
     build:
       context: ./dochadzka_backend
     restart: always
-    depends_on:
-      - db
     environment:
-      DATABASE_URL: postgres://kurri:Tomik7727@db:5432/railway  # Nastavenie DB pre Django
+      DATABASE_URL: postgres://postgres:Tomik7727@49.13.194.189:5432/dochadzka
     ports:
       - "8000:8000"
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
 
-  db:
-    image: postgres:13
-    restart: always
-    environment:
-      POSTGRES_USER: kurri
-      POSTGRES_PASSWORD: Tomik7727
-      POSTGRES_DB: railway
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql  # Načíta SQL pri prvom spustení
 volumes:
   pgdata:
