@@ -26,7 +26,7 @@ const NavBar = () => {
         <nav className="bg-gray-800 p-4 border rounded-lg shadow-sm relative">
             <div className="container mx-auto flex"> {/* Odstránené justify-between */}
                 <div className="flex-1 flex items-center"> {/* Názov v samostatnom flex kontajneri */}
-                    <Link to="/" className="text-white font-bold text-xl">Názov Aplikácie</Link>
+                    <Link to="/" className="text-white font-bold text-xl">ATU Dochádzka</Link>
                 </div>
 
                 {/* Desktopové menu */}
