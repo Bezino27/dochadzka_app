@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {fetchCategories, fetchPlayersByCategory} from "../api";
+import {API_URL, fetchCategories, fetchPlayersByCategory} from "../api";
 import {useNavigate, useParams} from "react-router-dom";
 
 const AddTrainingForm = () => {
@@ -82,7 +82,7 @@ const AddTrainingForm = () => {
         e.preventDefault();
 
         // Najprv pridáme tréning
-        fetch("http://127.0.0.1:8000/api/addtraining/", {
+        fetch(`${API_URL}/addtraining/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -101,7 +101,7 @@ const AddTrainingForm = () => {
 
                     if (isAbsent && reason) {
                         // Uložíme absenciu pre daného hráča
-                        fetch("http://127.0.0.1:8000/api/addabsence/", {
+                        fetch(`${API_URL}/addabsence`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
