@@ -1,4 +1,4 @@
-export const API_URL =  "http://localhost:8000/api";
+export const API_URL = "http://49.13.194.189:8000/api/";
 
 // Funkcia na získanie kategórií
 export const fetchCategories = async () => {
