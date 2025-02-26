@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exponujeme port 8000
-EXPOSE 8000
+EXPOSE 8001
 
 # Spustíme aplikáciu
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "tvoj_projekt.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "dochadzka_backend.wsgi:application"]

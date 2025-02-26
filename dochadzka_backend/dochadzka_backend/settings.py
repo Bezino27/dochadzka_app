@@ -30,7 +30,7 @@ DEBUG = True
 CSRF_TRUSTED_ORIGINS = [
     "https://web-databaseurl-5e2d.up.railway.app",
 ]
-ALLOWED_HOSTS = ['dochadzka.onrender.com', 'localhost', '127.0.0.1', 'web-databaseurl-5e2d.up.railway.app']
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', 'web-databaseurl-5e2d.up.railway.app']
 
 # Kde sa budú ukladať statické súbory pri deployi
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -78,7 +78,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Povolenie pre React na localhoste
+    "http://localhost",
+    "http://localhost:3000",
+    "http://49.13.194.189",
+    "http://49.13.194.189:80",
+    "http://49.13.194.189:8000",  # Povolenie pre React na localhoste
 ]
 
 ROOT_URLCONF = 'dochadzka_backend.urls'
@@ -115,20 +119,21 @@ import dj_database_url
 load_dotenv()
 
 # Výber databázy podľa prostredia
+
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL)
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=False)
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'dochadzka',  # názov DB
+            'NAME': 'railway',  # názov DB musí byť rovnaký ako v docker-compose.yml
             'USER': 'kurri',  # DB používateľ
-            'PASSWORD': 'Tomik7727',  # Heslo, ktoré si nastavil pre PostgreSQL
-            'HOST': 'localhost',  # Ak beží na rovnakom serveri: 'localhost'
+            'PASSWORD': 'Tomik7727',  # Heslo k PostgreSQL
+            'HOST': 'db',  # Názov služby v docker-compose.yml
             'PORT': '5432',
         }
     }

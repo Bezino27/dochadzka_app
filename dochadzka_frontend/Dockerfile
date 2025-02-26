@@ -1,14 +1,14 @@
-# Použijeme oficiálny Nginx image
+# Použijeme Node.js na zostavenie frontend aplikácie
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Použijeme Nginx na servovanie buildu
 FROM nginx:alpine
-
-# Skopírujeme buildnuté súbory do Nginx
-COPY build /usr/share/nginx/html
-
-# Skopírujeme vlastnú konfiguráciu Nginx
+COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Exponujeme port 80
 EXPOSE 80
-
-# Spustíme Nginx
 CMD ["nginx", "-g", "daemon off;"]
