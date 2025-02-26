@@ -130,12 +130,13 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'railway',  # názov DB musí byť rovnaký ako v docker-compose.yml
-            'USER': 'kurri',  # DB používateľ
-            'PASSWORD': 'Tomik7727',  # Heslo k PostgreSQL
-            'HOST': 'db',  # Názov služby v docker-compose.yml
+            'NAME': 'dochadzka',
+            'USER': 'postgres',
+            'PASSWORD': 'Tomik7727',
+            'HOST': 'db',  # názov kontajnera s PostgreSQL, ak beží v Docker Compose
             'PORT': '5432',
         }
+    }
     }
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
