@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import {API_URL} from "./api";
 
 const PlayerDetail = () => {
     const { id } = useParams(); // Získa parametre z URL
@@ -7,7 +8,7 @@ const PlayerDetail = () => {
 
     useEffect(() => {
         // Získaj hráča z API na základe ID
-        fetch(`http://127.0.0.1:8000/api/players/${id}/`)
+        fetch(`${API_URL}/players/${id}/`)
             .then((response) => response.json())
             .then((data) => setPlayer(data))
             .catch((error) => console.error('Error fetching player:', error));

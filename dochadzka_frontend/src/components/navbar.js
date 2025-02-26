@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {API_URL} from "../api";
 
 const NavBar = () => {
     const [categories, setCategories] = useState([]);
@@ -7,7 +8,7 @@ const NavBar = () => {
     const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/categories/")
+        fetch(`${API_URL}/categories/`)
             .then((response) => response.json())
             .then((data) => setCategories(data))
             .catch((error) => console.error("Chyba pri načítaní kategórií:", error));

@@ -8,7 +8,7 @@ const CategoryPage = () => {
     const [trainings, setTrainings] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [showAllTrainings, setShowAllTrainings] = useState(false);
-    const [attendee, setAttendee] = useState(null);
+
 
     useEffect(() => {
         fetchPlayersByCategory(categoryName).then(setPlayers);
@@ -31,9 +31,6 @@ const CategoryPage = () => {
         setShowAllTrainings(!showAllTrainings);
     };
 
-    const attendanceCount = (playerTrainings, allTrainings) => {
-
-    }
 
 
     return (

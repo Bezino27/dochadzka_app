@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {API_URL} from "../api";
 
 const AddPlayerForm = () => {
     const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ const AddPlayerForm = () => {
 
     // Načítanie kategórií z backendu
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/categories/")
+        fetch(`${API_URL}/categories/`)
             .then(response => response.json())
             .then(data => setCategories(data))
             .catch(error => console.error("Chyba pri načítaní kategórií:", error));
@@ -43,7 +44,7 @@ const AddPlayerForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch("http://127.0.0.1:8000/api/addplayer/", {
+        fetch(`${API_URL}/addplayer/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
