@@ -22,6 +22,8 @@ from dochadzka_app.urls import urlpatterns
 
 urlpatterns = [
     path('api/', include(dochadzka_app_urls)),
+    path('admin/', admin.site.urls),
+
 ]
 
 
