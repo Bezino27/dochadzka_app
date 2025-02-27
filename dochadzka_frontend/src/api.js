@@ -110,7 +110,7 @@ export const createTraining = async (trainingData) => {
 //funkcia pre načítanie hráča podľa jeho ID
 export const fetchPlayerById = async (playerID) => {
     try {
-        const response = await fetch(`${API_URL}/players/${playerID}/`);
+        const response = await fetch(`${API_URL}/player/${playerID}/`);
         if (!response.ok) {
             throw new Error(`Chyba pri načítaní hráča s ID ${playerID}`);
         }
@@ -123,7 +123,7 @@ export const fetchPlayerById = async (playerID) => {
 
 export const fetchTrainingsByPlayerId = async (playerID) => {
     try {
-        const response = await fetch(`${API_URL}/players/${playerID}/trainings/`);
+        const response = await fetch(`${API_URL}/player/${playerID}/trainings/`);
         if (!response.ok) {
             throw new Error(`Chyba pri načítaní tréningov pre hráča s ID ${playerID}`);
         }
