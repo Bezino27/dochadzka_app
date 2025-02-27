@@ -14,8 +14,6 @@ from operator import truediv
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -55,10 +53,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.sites',
     'dochadzka_app',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'corsheaders',
+    'rest_framework_simplejwt',
 
 ]
 
@@ -72,19 +68,39 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+CORS_ALLOW_ALL_ORIGINS = True  # Povolenie pre všetky domény (dočasne na testovanie)
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://localhost:3000",
     "http://49.13.194.189",
-    "http://49.13.194.189:80",
-    "http://49.13.194.189:8000",  # Povolenie pre React na localhoste
+    "http://49.13.194.189:8000"
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+    "OPTIONS"
+]
+
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization"
+]
 ROOT_URLCONF = 'dochadzka_backend.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
@@ -181,22 +197,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SITE_ID = 1
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
-ACCOUNT_LOGOUT_REDIRECT = '/'
-ACCOUNT_PRESERVE_USERNAME_CASING = False
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
-ACCOUNT_USERNAME_MIN_LENGTH = 2
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-
-]

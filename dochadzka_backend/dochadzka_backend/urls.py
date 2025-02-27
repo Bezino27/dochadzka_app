@@ -21,10 +21,7 @@ from dochadzka_app import urls as dochadzka_app_urls
 from dochadzka_app.urls import urlpatterns
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('api/', include(dochadzka_app_urls)),
-    path('', include(dochadzka_app_urls, namespace='dochadzka_backend')),
-    path('', include("allauth.urls")),  # Použitie path namiesto url
 ]
 
 
