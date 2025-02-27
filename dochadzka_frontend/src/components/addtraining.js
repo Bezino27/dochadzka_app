@@ -101,7 +101,7 @@ const AddTrainingForm = () => {
 
                     if (isAbsent && reason) {
                         // Uložíme absenciu pre daného hráča
-                        fetch(`${API_URL}/addabsence`, {
+                        fetch(`${API_URL}/addabsence/`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
